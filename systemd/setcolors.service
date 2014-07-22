@@ -1,0 +1,12 @@
+[Unit]
+Description=Setup Virtual Console Colors
+DefaultDependencies=no
+Before=sysinit.target
+ConditionPathExists=/dev/console
+ConditionPathExists=/etc/vt_color/default
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/setcolors -c /dev/console /etc/vt_color/default
+

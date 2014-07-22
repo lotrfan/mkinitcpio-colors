@@ -1,0 +1,21 @@
+#!/bin/bash
+
+build() {
+    if [[ -f "/etc/vt_color/default" ]]; then
+        add_systemd_unit setcolors.service
+        add_binary "/usr/bin/setcolors"
+        add_file "/etc/vt_color/default"
+    else
+        warning "No colors found despite added hook."
+    fi
+}
+
+help() {
+    cat <<HELPEOF
+This hook will setup the console colors during early user space.
+The colors are taken from /etc/vt_color/default
+HELPEOF
+}
+
+# vim: set ft=sh ts=4 sw=4 et:
+
