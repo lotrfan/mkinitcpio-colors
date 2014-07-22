@@ -1,28 +1,13 @@
 #!/bin/bash
 build() {
-    # subshell to avoid namespace pollution
-    (
-        [[ -s /etc/vconsole.conf ]] && . /etc/vconsole.conf
-        
-        for COLOR_ID in $(seq 0 15)
-        do
-            COLOR=$(eval "echo \$COLOR_${COLOR_ID}")
-
-            if [[ ! "$COLOR" ]]
-            then
-                warning "colors: Not all colors specified in configuration"
-                exit 1
-            fi
-
-            COLORS="${COLORS}${COLOR_ID}#${COLOR}\n"
-        done
-
-        echo -ne "$COLORS" > "$BUILDROOT/consolecolors"
-        exit 0
-    )
-    
-    add_runscript
-    add_binary "/usr/bin/setcolors"
+    if [[ -f "/etc/vt_color/default" ]]; then
+        add_runscript
+        add_systemd_unit setcolors.service
+        add_binary "/usr/bin/setcolors"
+        add_file "/etc/vt_color/default"
+    else
+        warning "No colors found despite added hook."
+    fi
 }
 
 help() {

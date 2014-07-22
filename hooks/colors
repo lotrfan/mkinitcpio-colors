@@ -1,9 +1,9 @@
 #!/usr/bin/ash
 
 run_earlyhook() {
-    if [ -e /consolecolors ]
+    if [ -e /etc/vt_color/default ]
     then
-        setcolors -c /dev/console /consolecolors
+        setcolors -c /dev/console /etc/vt_color/default
     else
         msg "No consolecolors found despite added hook."
     fi
